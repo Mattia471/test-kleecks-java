@@ -1,0 +1,62 @@
+[
+  {
+    "id": 1,
+    "user": "A",
+    "year": 2021,
+    "total": 500
+  },
+  {
+    "id": 2,
+    "user": "B",
+    "year": 2021,
+    "total": 1000
+  },
+  {
+    "id": 3,
+    "user": "C",
+    "year": 2022,
+    "total": 900
+  },
+  {
+    "id": 4,
+    "user": "A",
+    "year": 2022,
+    "total": 1200
+  },
+  {
+    "id": 5,
+    "user": "B",
+    "year": 2021,
+    "total": 600
+  },
+  {
+    "id": 6,
+    "user": "A",
+    "year": 2022,
+    "total": 900
+  },
+  {
+    "id": 7,
+    "user": "B",
+    "year": 2021,
+    "total": 500
+  },
+  {
+    "id": 8,
+    "user": "C",
+    "year": 2021,
+    "total": 1000
+  },
+  {
+    "id": 9,
+    "user": "C",
+    "year": 2022,
+    "total": 700
+  },
+  {
+    "id": 10,
+    "user": "B",
+    "year": 2021,
+    "total": 500
+  }
+]
