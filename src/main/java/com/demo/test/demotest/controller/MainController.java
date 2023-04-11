@@ -2,6 +2,7 @@ package com.demo.test.demotest.controller;
 
 import com.demo.test.demotest.dto.request.TotalSalesRequest;
 import com.demo.test.demotest.dto.response.TotalSalesResponse;
+import com.demo.test.demotest.service.HtmlReaderService;
 import com.demo.test.demotest.service.JsonFormatterService;
 import com.demo.test.demotest.service.TotalSalesService;
 import org.json.simple.JSONObject;
@@ -10,6 +11,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
 import java.util.List;
 
 @RestController
@@ -21,6 +23,9 @@ public class MainController {
 
     @Autowired
     TotalSalesService totalSalesService;
+
+    @Autowired
+    HtmlReaderService htmlReaderService;
 
     //API che ottiene internamente il json e lo formatta nel formato richiesto
     @GetMapping(value = "json", produces = "application/json")
@@ -41,6 +46,12 @@ public class MainController {
     public ResponseEntity<?> save(@RequestBody List<TotalSalesRequest> totalSalesRequestList) {
         totalSalesService.saveAllRows(totalSalesRequestList);
         return ResponseEntity.ok("DATI INSERITI");
+    }
+
+    @GetMapping(value = "compare/html", produces = "application/json")
+    public ResponseEntity<?> compareHtml() throws IOException {
+        htmlReaderService.htmlCompare();
+        return null;
     }
 
 
