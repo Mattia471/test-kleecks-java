@@ -48,10 +48,11 @@ public class MainController {
         return ResponseEntity.ok("DATI INSERITI");
     }
 
+    //API che legge i file html e li confronta per trovare le differenze
     @GetMapping(value = "compare/html", produces = "application/json")
     public ResponseEntity<?> compareHtml() throws IOException {
         htmlReaderService.htmlCompare();
-        return null;
+        return ResponseEntity.ok("");
     }
 
 

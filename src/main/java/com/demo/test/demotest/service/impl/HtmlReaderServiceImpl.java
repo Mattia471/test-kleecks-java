@@ -1,11 +1,14 @@
 package com.demo.test.demotest.service.impl;
 
+import com.demo.test.demotest.model.ListActionsHtml;
 import com.demo.test.demotest.service.HtmlReaderService;
 import org.springframework.stereotype.Service;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Scanner;
 
 @Service
@@ -17,33 +20,97 @@ public class HtmlReaderServiceImpl implements HtmlReaderService {
         File pagina2 = new File("src/main/java/com/demo/test/demotest/mock/html/pagina2.html");
         Scanner scanner1 = new Scanner(pagina1);
         Scanner scanner2 = new Scanner(pagina2);
-        String filesDiff = "";
+        //crea un oggetto di tipo ListActionsHtml
+        ArrayList<ListActionsHtml> listActionsHtmlList = new ArrayList<>();
+        int rowIndex = 0;
         while (scanner1.hasNextLine() || scanner2.hasNextLine()) {
+            ListActionsHtml listActionsHtml = new ListActionsHtml();
             String line1 = scanner1.hasNextLine() ? scanner1.nextLine() : "";
             String line2 = scanner2.hasNextLine() ? scanner2.nextLine() : "";
-            if (line1.equals(line2) && !line1.isEmpty()) {
-                filesDiff = filesDiff.concat(line1 + "\n");
-            }else{
-                filesDiff = filesDiff.concat(line2 + "\n");
+            //se le righe sono diverse inserisco l'azione REMOVE e INSERT
+            if (!line1.equals(line2)) {
+                listActionsHtml.setAction("REMOVE");
+                listActionsHtml.setHtml(line1);
+                listActionsHtml.setRowPage(rowIndex);
+                listActionsHtmlList.add(listActionsHtml);
+                listActionsHtml = new ListActionsHtml();
+                listActionsHtml.setAction("INSERT");
+                listActionsHtml.setHtml(line2);
+                listActionsHtml.setRowPage(rowIndex);
+                listActionsHtmlList.add(listActionsHtml);
             }
+            rowIndex++;
         }
-        FileWriter fileWriter = new FileWriter("src/main/java/com/demo/test/demotest/mock/html/risultato.html");
-        fileWriter.write(filesDiff);
-        fileWriter.close();
+        runActions(listActionsHtmlList, pagina1);
     }
 
     @Override
-    public void remove() {
+    public void runActions(ArrayList<ListActionsHtml> listAction, File page1) {
+        String newPage = "";
+        //itera la lista di azioni
+        for (ListActionsHtml actionsHtml : listAction) {
+            //switch per le azioni
+            switch (actionsHtml.getAction()) {
+                case "REMOVE":
+                    try {
+                        newPage = remove(page1, actionsHtml.getHtml());
+                    } catch (FileNotFoundException e) {
+                        e.printStackTrace();
+                    }
+                    break;
+                case "INSERT":
+                    try {
+                        newPage = insert(page1, actionsHtml.getHtml(), actionsHtml.getRowPage());
+                    } catch (FileNotFoundException e) {
+                        e.printStackTrace();
+                    }
+                    break;
+            }
+            //riassegna il nuovo valore alla pagina
+            // page1 = new File(newPage);
+        }
+        try {
+            FileWriter fileWriter = new FileWriter("src/main/java/com/demo/test/demotest/mock/html/risultato.html");
+            fileWriter.write(newPage);
+            fileWriter.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
     }
 
-    @Override
-    public void insert() {
 
+    @Override
+    public String remove(File page1, String oldHtml) throws FileNotFoundException {
+        String newPage = "";
+        Scanner scanner1 = new Scanner(page1);
+        while (scanner1.hasNextLine()) {
+            String line1 = scanner1.hasNextLine() ? scanner1.nextLine() : "";
+            if (line1.equals(oldHtml)) {
+                line1 = line1.replace(oldHtml, " ");
+            }
+            newPage = newPage.concat(line1 + "\n");
+        }
+        return newPage;
     }
 
     @Override
-    public void move() {
+    public String insert(File page1, String newHtml, Integer rowPage) throws FileNotFoundException {
+        String newPage = "";
+        Scanner scanner1 = new Scanner(page1);
+        int rowIndex = 0;
+        while (scanner1.hasNextLine()) {
+            String line1 = scanner1.hasNextLine() ? scanner1.nextLine() : "";
+            if (rowIndex == rowPage) {
+                line1 = line1.concat("\n" + newHtml);
+            }
+            newPage = newPage.concat(line1 + "\n");
+        }
+        return newPage;
+    }
+
+    @Override
+    public void move(String file, String newHtml) {
 
     }
 }

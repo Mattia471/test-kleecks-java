@@ -1,13 +1,20 @@
 package com.demo.test.demotest.service;
 
+import com.demo.test.demotest.model.ListActionsHtml;
+
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.ArrayList;
 
 public interface HtmlReaderService {
     void htmlCompare() throws IOException;
 
-    void remove();
+    void runActions(ArrayList<ListActionsHtml> listAction, File page1) throws FileNotFoundException;
 
-    void insert();
+    String remove(File page1, String oldHtml) throws FileNotFoundException;
 
-    void move();
+    String insert(File page1, String newHtml, Integer rowPage) throws FileNotFoundException;
+
+    void move(String file, String newHtml);
 }
