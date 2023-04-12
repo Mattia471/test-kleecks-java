@@ -12,9 +12,11 @@ public interface HtmlReaderService {
 
     void runActions(ArrayList<ListActionsHtml> listAction, File page1) throws FileNotFoundException;
 
-    String remove(File page1, String oldHtml) throws FileNotFoundException;
+    File remove(File page1, String oldHtml) throws FileNotFoundException;
 
-    String insert(File page1, String newHtml, Integer rowPage) throws FileNotFoundException;
+    File insert(File page1, String newHtml, Integer rowPage) throws FileNotFoundException;
 
     void move(String file, String newHtml);
+
+    File writeFile(String newPage);
 }
