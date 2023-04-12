@@ -22,13 +22,13 @@ public class HtmlReaderServiceImpl implements HtmlReaderService {
         Scanner scanner2 = new Scanner(pagina2);
         //crea un oggetto di tipo ListActionsHtml
         ArrayList<ListActionsHtml> listActionsHtmlList = new ArrayList<>();
-        int rowIndex = 0;
+        int rowIndex = 1;
         while (scanner1.hasNextLine() || scanner2.hasNextLine()) {
             ListActionsHtml listActionsHtml = new ListActionsHtml();
             String line1 = scanner1.hasNextLine() ? scanner1.nextLine() : "";
             String line2 = scanner2.hasNextLine() ? scanner2.nextLine() : "";
             //se le righe sono diverse inserisco l'azione REMOVE e INSERT
-            if (!line1.equals(line2)) {
+            if (!line1.trim().equals(line2.trim())) {
                 listActionsHtml.setAction("REMOVE");
                 listActionsHtml.setHtml(line1);
                 listActionsHtml.setRowPage(rowIndex);
@@ -92,8 +92,8 @@ public class HtmlReaderServiceImpl implements HtmlReaderService {
     public File insert(File page1, String newHtml, Integer rowPage) throws FileNotFoundException {
         String newPage = "";
         Scanner scanner1 = new Scanner(page1);
-        Integer rowIndex = 0;
-        while (scanner1.hasNextLine()) {
+        Integer rowIndex = 1;
+        while (scanner1.hasNextLine() || rowIndex == rowPage) {
             String line1 = scanner1.hasNextLine() ? scanner1.nextLine() : "";
             if (rowIndex == rowPage) {
                 line1 = line1.concat(" " + newHtml);
